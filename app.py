@@ -1,5 +1,4 @@
-from flask import Flask
-from flask import render_template
+from flask import Flask, render_template, g, request
 from flask.ext.sqlalchemy import SQLAlchemy
 from datetime import datetime
 import os
@@ -15,8 +14,8 @@ app.config['SQLALCHEMY_MIGRATE_REPO'] = SQLALCHEMY_MIGRATE_REPO
 db = SQLAlchemy(app)
 
 class Fill(db.Model):
-	pet_id = db.Column(db.Integer, primary_key=True)
-	date_time = db.Column(db.DateTime)
+	pet_id = db.Column(db.Integer)
+	date_time = db.Column(db.DateTime, primary_key=True)
 	water_fill = db.Column(db.Float)
 	food_fill = db.Column(db.Float)
 
@@ -28,4 +27,4 @@ class Fill(db.Model):
 			self.date_time = datetime.now()
 
 	def __repr__(self):
-		return '<Fill %d>' % self.pet_id
+		return '<Fill ' + str(self.pet_id) + ', ' + str(self.water_fill) + ', ' + str(self.food_fill) + ', ' + str(self.date_time) + '>'
