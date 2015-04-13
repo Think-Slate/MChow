@@ -12,7 +12,6 @@ app.config['DEBUG'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
 app.config['SQLALCHEMY_MIGRATE_REPO'] = SQLALCHEMY_MIGRATE_REPO
 db = SQLAlchemy(app)
-db.create_all()
 
 class Fill(db.Model):
 	pet_id = db.Column(db.Integer)
@@ -29,3 +28,5 @@ class Fill(db.Model):
 
 	def __repr__(self):
 		return '{ "id": ' + str(self.pet_id) + ', "water_fill": ' + str(self.water_fill) + ', "food_fill": ' + str(self.food_fill) + ', "time": "' + str(self.date_time) + '"}'
+
+# db.create_all()
