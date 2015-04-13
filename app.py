@@ -29,4 +29,4 @@ class Fill(db.Model):
 	def __repr__(self):
 		return '{ "id": ' + str(self.pet_id) + ', "water_fill": ' + str(self.water_fill) + ', "food_fill": ' + str(self.food_fill) + ', "time": "' + str(self.date_time) + '"}'
 
-# db.create_all()
+db.create_all()
