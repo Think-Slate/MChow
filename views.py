@@ -37,6 +37,22 @@ def getinfo(pet_id):
 
 	return render_template('petinfo.html', **options)
 
+@app.route('/petinfo/water/<int:pet_id>')
+def getinfo_water(pet_id):
+	options = {}
+	# db.create_all()
+	options['fills'] = Fill.query.filter_by(pet_id = pet_id).order_by(Fill.date_time).all()
+
+	return render_template('petinfo_water.html', **options)
+
+@app.route('/petinfo/food/<int:pet_id>')
+def getinfo_food(pet_id):
+	options = {}
+	# db.create_all()
+	options['fills'] = Fill.query.filter_by(pet_id = pet_id).order_by(Fill.date_time).all()
+
+	return render_template('petinfo_food.html', **options)
+
 @app.route('/petinfo/<int:pet_id>/<after_date_time>')
 def getinfoAfter(pet_id, after_date_time):
 	options = {}
@@ -45,3 +61,26 @@ def getinfoAfter(pet_id, after_date_time):
 	options['fills'] = Fill.query.filter_by(pet_id = pet_id).filter(Fill.date_time > after_date_time).order_by(Fill.date_time).all()
 
 	return render_template('petinfo.html', **options)
+
+@app.route('/petinfo/water/<int:pet_id>/<after_date_time>')
+def getinfoAfter_water(pet_id, after_date_time):
+	options = {}
+	# db.create_all()
+	print after_date_time
+	options['fills'] = Fill.query.filter_by(pet_id = pet_id).filter(Fill.date_time > after_date_time).order_by(Fill.date_time).all()
+
+	return render_template('petinfo_water.html', **options)
+
+@app.route('/petinfo/food/<int:pet_id>/<after_date_time>')
+def getinfoAfter_food(pet_id, after_date_time):
+	options = {}
+	# db.create_all()
+	print after_date_time
+	options['fills'] = Fill.query.filter_by(pet_id = pet_id).filter(Fill.date_time > after_date_time).order_by(Fill.date_time).all()
+
+	return render_template('petinfo_food.html', **options)
+
+
+
+
+

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% for fill in fills %}
+	({{ fill.water_fill }}, {{ fill.date_time }})
+{% endfor %}
+
+{% endblock %}
