@@ -14,10 +14,12 @@ def index():
 def addinfoCurrent(pet_id, water_fill, food_fill):
 	options = {}
 	# db.create_all()
-
-	newfill = Fill(pet_id, water_fill, food_fill)
-	db.session.add(newfill)
-	db.session.commit()
+	try:
+		newfill = Fill(pet_id, water_fill, food_fill)
+		db.session.add(newfill)
+		db.session.commit()
+	except:
+		db.session.rollback()
 
 	return render_template('index.html', **options)  
 
@@ -25,10 +27,12 @@ def addinfoCurrent(pet_id, water_fill, food_fill):
 def addinfoPast(pet_id, date_time, water_fill, food_fill):
 	options = {}
 	# db.create_all()
-
-	newfill = Fill(pet_id, water_fill, food_fill, date_time)
-	db.session.add(newfill)
-	db.session.commit()
+	try:
+		newfill = Fill(pet_id, water_fill, food_fill, date_time)
+		db.session.add(newfill)
+		db.session.commit()
+	except:
+		db.session.rollback()
 
 	return render_template('index.html', **options)   
 
