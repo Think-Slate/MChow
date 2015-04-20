@@ -20,7 +20,7 @@ for i in range(0, 100):
 	c = pycurl.Curl()
 	water_fill = random.uniform(0, 1000)
 	food_fill = random.uniform(0, 200)
-	url = 'http://mchow.herokuapp.com/petinfo/' + str(bowl_id) + '/' + str(water_fill) + '/' + str(food_fill) + '/' + str(random_date()).replace(" ", "%")
+	url = 'http://mchow.herokuapp.com/petinfo/' + str(bowl_id) + '/' + str(water_fill) + '/' + str(food_fill) + '/' + str(random_date()).replace(" ", "%20")
 	print url
 	c.setopt(pycurl.URL, url)
 	c.perform()

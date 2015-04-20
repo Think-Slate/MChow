@@ -25,6 +25,8 @@ class Fill(db.Model):
 		self.food_fill = food_fill
 		if date_time is None:
 			self.date_time = datetime.now()
+		else:
+			self.date_time = date_time
 
 	def __repr__(self):
 		return '{ "id": ' + str(self.pet_id) + ', "water_fill": ' + str(self.water_fill) + ', "food_fill": ' + str(self.food_fill) + ', "time": "' + str(self.date_time) + '"}'

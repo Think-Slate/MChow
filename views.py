@@ -2,7 +2,7 @@ from flask import render_template, request
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import func
 from app import app, db, Fill
-import time
+from datetime import datetime
 
 @app.route('/')
 def index():
@@ -14,13 +14,13 @@ def index():
 def addinfoCurrent(pet_id, water_fill, food_fill):
 	options = {}
 	# db.create_all()
-	try:
-		newfill = Fill(pet_id, water_fill, food_fill)
-		db.session.add(newfill)
-		db.session.commit()
-	except:
-		options['error'] = "Error adding fill, rolling back session"
-		db.session.rollback()
+	# try:
+	newfill = Fill(pet_id, water_fill, food_fill)
+	db.session.add(newfill)
+	db.session.commit()
+	# except Exception as e:
+	# 	options['error'] = e
+	# 	db.session.rollback()
 
 	return render_template('index.html', **options)  
 
@@ -28,13 +28,16 @@ def addinfoCurrent(pet_id, water_fill, food_fill):
 def addinfoPast(pet_id, date_time, water_fill, food_fill):
 	options = {}
 	# db.create_all()
+	print date_time
+	print datetime.strptime(date_time, "%Y-%m-%d %H:%M:%S.%f")
 	try:
-		newfill = Fill(pet_id, water_fill, food_fill, date_time)
+		newfill = Fill(pet_id, water_fill, food_fill, datetime.strptime(date_time, "%Y-%m-%d %H:%M:%S.%f"))
 		db.session.add(newfill)
 		db.session.commit()
-	except:
-		options['error'] = "Error adding fill, rolling back sesison"
+	except Exception as e:
+		options['error'] = e
 		db.session.rollback()
+	
 
 	return render_template('index.html', **options)   
 
