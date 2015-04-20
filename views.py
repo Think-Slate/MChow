@@ -18,6 +18,7 @@ def addinfoCurrent(pet_id, water_fill, food_fill):
 		newfill = Fill(pet_id, water_fill, food_fill)
 		db.session.add(newfill)
 		db.session.commit()
+		options['error'] = "Error adding fill, rolling back sesison"
 	except:
 		db.session.rollback()
 
