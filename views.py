@@ -1,5 +1,8 @@
 from flask import render_template, request
+from flask.ext.sqlalchemy import SQLAlchemy
+from sqlalchemy import func
 from app import app, db, Fill
+import time
 
 @app.route('/')
 def index():
@@ -23,7 +26,7 @@ def addinfoPast(pet_id, date_time, water_fill, food_fill):
 	options = {}
 	# db.create_all()
 
-	newfill = Fill(pet_id, water_fill, food_fill)
+	newfill = Fill(pet_id, water_fill, food_fill, date_time)
 	db.session.add(newfill)
 	db.session.commit()
 
@@ -41,7 +44,22 @@ def getinfo(pet_id):
 def getinfo_water(pet_id):
 	options = {}
 	# db.create_all()
-	options['fills'] = Fill.query.filter_by(pet_id = pet_id).order_by(Fill.date_time).all()
+
+	fQ = Fill.query.filter_by(pet_id = pet_id).order_by(Fill.date_time).all()
+	consumedDailyMax = {}
+	consumedDailyMin = {}
+	for item in fQ:
+		if item.date_time.date() not in consumedDailyMax or item.water_fill > consumedDailyMax[item.date_time.date()].water_fill:
+			consumedDailyMax[item.date_time.date()] = item
+		if item.date_time.date() not in consumedDailyMin or item.water_fill < consumedDailyMin[item.date_time.date()].water_fill:
+			consumedDailyMin[item.date_time.date()] = item
+
+	consumedDaily = {}
+	for key in consumedDailyMax.keys():
+		consumedDaily[key] = consumedDailyMax[key].water_fill - consumedDailyMin[key].water_fill
+
+	options['fills'] = consumedDaily
+	print options['fills']
 
 	return render_template('petinfo_water.html', **options)
 
@@ -49,7 +67,21 @@ def getinfo_water(pet_id):
 def getinfo_food(pet_id):
 	options = {}
 	# db.create_all()
-	options['fills'] = Fill.query.filter_by(pet_id = pet_id).order_by(Fill.date_time).all()
+	fQ = Fill.query.filter_by(pet_id = pet_id).order_by(Fill.date_time).all()
+	consumedDailyMax = {}
+	consumedDailyMin = {}
+	for item in fQ:
+		if item.date_time.date() not in consumedDailyMax or item.food_fill > consumedDailyMax[item.date_time.date()].food_fill:
+			consumedDailyMax[item.date_time.date()] = item
+		if item.date_time.date() not in consumedDailyMin or item.food_fill < consumedDailyMin[item.date_time.date()].food_fill:
+			consumedDailyMin[item.date_time.date()] = item
+
+	consumedDaily = {}
+	for key in consumedDailyMax.keys():
+		consumedDaily[key] = consumedDailyMax[key].food_fill - consumedDailyMin[key].food_fill
+
+	options['fills'] = consumedDaily
+	print options['fills']
 
 	return render_template('petinfo_food.html', **options)
 

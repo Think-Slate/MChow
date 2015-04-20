@@ -3,7 +3,7 @@
 {% block content %}
 
 {% for fill in fills %}
-	({{ fill.food_fill }}, {{ fill.date_time }})
+	({{ fill }},{{ fills[fill] }})
 {% endfor %}
 
 {% endblock %}
