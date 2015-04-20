@@ -32,6 +32,7 @@ def addinfoPast(pet_id, date_time, water_fill, food_fill):
 		db.session.add(newfill)
 		db.session.commit()
 	except:
+		options['error'] = "Error adding fill, rolling back sesison"
 		db.session.rollback()
 
 	return render_template('index.html', **options)   
