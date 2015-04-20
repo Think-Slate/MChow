@@ -1,6 +1,6 @@
 from flask import render_template, request
 from flask.ext.sqlalchemy import SQLAlchemy
-from sqlalchemy import func
+from sqlalchemy import func, desc
 from app import app, db, Fill
 from datetime import datetime
 
@@ -28,8 +28,6 @@ def addinfoCurrent(pet_id, water_fill, food_fill):
 def addinfoPast(pet_id, date_time, water_fill, food_fill):
 	options = {}
 	# db.create_all()
-	print date_time
-	print datetime.strptime(date_time, "%Y-%m-%d %H:%M:%S.%f")
 	try:
 		newfill = Fill(pet_id, water_fill, food_fill, datetime.strptime(date_time, "%Y-%m-%d %H:%M:%S.%f"))
 		db.session.add(newfill)
@@ -121,7 +119,27 @@ def getinfoAfter_food(pet_id, after_date_time):
 
 	return render_template('petinfo_food.html', **options)
 
+@app.route('/petinfo/current/water/<int:pet_id>')
+def getinfoCurrent_water(pet_id):
+	options = {}
+	# db.create_all()
 
+	fill = Fill.query.filter_by(pet_id = pet_id).order_by(desc(Fill.date_time)).first()
+	tup = (fill.date_time, fill.water_fill)
+	options['fill'] = tup
+
+	return render_template('petinfo_current.html', **options)
+
+@app.route('/petinfo/current/food/<int:pet_id>')
+def getinfoCurrent_food(pet_id):
+	options = {}
+	# db.create_all()
+
+	fill = Fill.query.filter_by(pet_id = pet_id).order_by(desc(Fill.date_time)).first()
+	tup = (fill.date_time, fill.food_fill)
+	options['fill'] = tup
+
+	return render_template('petinfo_current.html', **options)
 
 
 
